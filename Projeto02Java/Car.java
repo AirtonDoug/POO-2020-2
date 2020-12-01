@@ -1,3 +1,4 @@
+import java.util.Scanner;
 public class Car{
     int pass;
     int passMax;
@@ -36,12 +37,16 @@ public class Car{
     void fuel(int value){
         if(gas<gasMax){
             gas+= value;
-            if(gas>gasMax)
+            if(gas>=gasMax)
                 gas=100;
+            return;
         }
-        else
+            
+        if(gas>=gasMax){
             gas=100;
-            System.out.println("tanque cheio");    
+            System.out.println("tanque cheio");
+            return;
+        }    
     }
     boolean drive(int distance){
         int k;
@@ -86,44 +91,80 @@ public class Car{
    public static void main(String[] args){
 
     Car car = new Car(0,2,0,100,0);
-    System.out.println(car);
+    Scanner scanner = new Scanner(System.in);
+
+    while(true){
+        String line = scanner.nextLine();
+        String[] ui = line.split(" ");
+
+        if(line.equals("show")){
+            System.out.println(car);
+        }else if(line.equals("in")){
+                car.in();
+        }else if(line.equals("out")){
+            car.out();
+        }else if(ui[0].equals("fuel")){
+            car.fuel(Integer.parseInt(ui[1]));
+        }else if(ui[0].equals("drive")){
+            car.drive(Integer.parseInt(ui[1]));
+        }else if(line.equals("end")){
+            break;
+        }
+
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //System.out.println(car);
     //pass: 0, gas: 0, km: 0
-    car.in();
-    car.in();
-    System.out.println(car);
+    //car.in();
+    //car.in();
+    //System.out.println(car);
     //pass: 2, gas: 0, km: 0
-    car.in();
+    //car.in();
     //fail: limite de pessoas atingido
-    System.out.println(car);
+    //System.out.println(car);
     //pass: 2, gas: 0, km: 0
-    car.out();
-    car.out();
-    car.out();
+    //car.out();
+    //car.out();
+    //car.out();
     //fail: nao ha ninguem no carro
-    System.out.println(car);
+    //System.out.println(car);
     //pass: 0, gas: 0, km: 0
-    car = new Car(0,2,0,100,0);
-    car.fuel(60);
-    System.out.println(car);
+    //car = new Car(0,2,0,100,0);
+    //car.fuel(60);
+    //System.out.println(car);
     //pass: 0, gas: 60, km: 0
     
-    car.drive(10);
+    //car.drive(10);
     //fail: nao ha ninguem no carro
     
-    car.in();
-    car.drive(10);
-    System.out.println(car);
+    //car.in();
+    //car.drive(10);
+    //System.out.println(car);
     //pass: 1, gas: 50, km: 10
     
-    car.drive(70);
+    //car.drive(70);
     //fail: tanque vazio apos andar 50 km
-    car.drive(10);
+    //car.drive(10);
     //fail: tanque vazio
-    System.out.println(car);
+    //System.out.println(car);
     //pass: 1, gas: 0, km: 60
     
-    car.fuel(200);
-    System.out.println(car);
+    //car.fuel(200);
+    //System.out.println(car);
     //pass: 1, gas: 100, km: 60
     
 

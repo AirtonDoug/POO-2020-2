@@ -1,4 +1,4 @@
-
+import java.util.Scanner;
 public class Calango{
     int bucho;
     int maxBucho;
@@ -6,53 +6,66 @@ public class Calango{
     boolean alive;
     int vida;
     //parametros das variáveis = sombreamento
-    Calango(int bucho,int maxBucho,int nPatas,boolean alive ,int vida){
-        this.bucho=bucho;
+    Calango(int maxBucho){
+        this.bucho=maxBucho;
         this.maxBucho=maxBucho;
-        this.nPatas = nPatas;
-        this.alive = alive;
-        this.vida = vida;
+        this.nPatas = 4;
+        this.alive = true;
+        this.vida = 4;
     }
 
 
-    void comer(){
+    void comer(int qtd){
         if(alive==true){
-            if(bucho < maxBucho){
-                bucho++;
-                System.out.println("nham nham que gostoso");
-            }else
+            bucho+=qtd;
+            if(bucho > maxBucho){
+                bucho=maxBucho;
+                System.out.println("comi até encher");
+            }else{
                 System.out.println("Tô cheio");
-    
+            }
         }else{
             System.out.println("Morto");
             alive=false;
         }
     }
-    void andar(){
-    if(nPatas>1){
+    void andar(int dist){
         if(alive==true){
+            if(nPatas < 2){
+                System.out.println("Não posso andar com essa quantidade de patas");
+                return;
+            }
             if(bucho>0){
-                bucho--;
-                System.out.println("Estou andando perdi energia");
-            }else if(vida>0){
-                vida--;
-                System.out.println("Estou usando vida para andar");
+                if(bucho<dist){
+                    System.out.println("Andei só"+ bucho);
+                    bucho=0;
+                    return;
+                }
+                bucho-=dist;
+                System.out.println("Estou andando gastei energia");
+                return;
+            }
+            if(bucho==0 && vida > 0){
+                if(dist > vida){
+                    System.out.println("Andei até "+vida+" e morri");
+                    vida=0;
+                    alive=false;
+                    return;
+                }
+                System.out.println("Gastei vida par andar");
+                vida-=dist;
                 if(vida<=0)
                     alive=false;
-            }else{
-                System.out.println("Morto");
-                alive=false;
+                return;
             }
 
 
 
+
+        }else{
+            System.out.println("Morto");
+            alive=false;
         }
-      
-                
-    
-     
-    }else
-        System.out.println("Não consigo andar com esse tanto de patas");   
 }
     void acidentar(){
         if(alive==true){
@@ -84,6 +97,10 @@ public class Calango{
                 System.out.println("Não tenho energia para regenerar vou usar minha vida para regenerar");
                 vida--;
                 nPatas++;
+                if(vida==0){
+                    alive=false;
+                    System.out.println("Morri me regenerando");
+                }
             }
             else{
                 System.out.println("Morto");
@@ -97,23 +114,32 @@ public String toString(){
     return "Bucho: "+ bucho + "/" + maxBucho + " Patas: " + nPatas + " Vivo: " + alive + " Vidas: " +vida;
 }
     public static void main(String[] args){
-        
 
-        //referencia   =         objeto
-        Calango deadlango = new Calango(0,20,4,true,4);
+        Calango deadlango = new Calango(20);
+        Scanner scanner= new Scanner(System.in);        
+        while(true){
+            String line = scanner.nextLine();
+            String[] ui = line.split(" ");
+        if(line.equals("end")){
+            break;
+        }else if(line.equals("show")){
+            System.out.println(deadlango);
+        }else if(ui[0].equals("andar")){
+            deadlango.andar(Integer.parseInt(ui[1]));
+        }else if(ui[0].equals("comer")){
+            deadlango.comer(Integer.parseInt(ui[1]));
+        }else if(line.equals("regenerar")){
+            deadlango.regenerar();
+        }else if(line.equals("acidentar")){
+            deadlango.acidentar();
 
-        deadlango.acidentar();
-        deadlango.acidentar();
-        deadlango.acidentar();
-        deadlango.andar();
-        deadlango.comer();
-        deadlango.regenerar();
-        deadlango.regenerar();
-        deadlango.regenerar();
-        deadlango.regenerar();
+        }else{
+            System.out.println("comando inválido");
+        }   
         
+    }
         
-
+        scanner.close();
 
 
     }
